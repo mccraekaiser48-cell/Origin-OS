@@ -1,0 +1,34 @@
+window "show"
+window "resizable" true
+window "dimensions" 1000 680
+import "win-buttons"
+
+url = "https://example.com"
+
+def "go"
+  target = input_address.str
+  if target.left(4) != "http" (
+    target = "https://" ++ target
+  )
+  url = target
+endef
+
+mainloop:
+
+loc 999 2 0 -26
+square window_width 26 10 : c#222
+
+loc 2 2 8 -24
+button "Go" 56 20 6
+if clicked (
+  go
+)
+
+loc 2 2 72 -24
+input 320 20 "address"
+
+if "enter".isKeyDown() (
+  go
+)
+
+iframe url "web" 0 -30 window_width window_height - 60
