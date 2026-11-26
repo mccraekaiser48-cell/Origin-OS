@@ -4,7 +4,21 @@
     <meta charset="utf-8">
     <title>originOS</title>
     <script>
-      window.location.replace('./Versions/originv700');
+      let params = new URLSearchParams(location.search);
+      fetch('https://api.github.com/repos/Mistium/Origin-OS/contents/Versions')
+        .then(response => response.json())
+        .then(data => {
+          const versions = data.map(file => file.name);
+          const latestVersion = versions.sort().reverse()[0];
+          const url = `https://origin.mistium.com/Versions/${latestVersion.replace(".html","")}`;
+          const carryOverParams = params.toString() ? `?${params.toString()}` : '';
+          window.location.href = `${url}${carryOverParams}`;
+        })
+        .catch(error => {
+          const url = 'https://origin.mistium.com/Versions/originv700';
+          const carryOverParams = params.toString() ? `?${params.toString()}` : '';
+          window.location.href = `${url}${carryOverParams}`;
+        });
     </script>
   </head>
   <body></body>
